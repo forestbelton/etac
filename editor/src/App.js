@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import compile from './compile'
 import { MAP_HEIGHT, MAP_WIDTH } from './constants'
 import Map from './Map'
-import ColorPicker from './ColorPicker'
+import ColorPicker from './color/ColorPicker'
 
 const Property = styled.div`
   margin-bottom: 0.25rem;
@@ -146,12 +146,12 @@ class App extends Component {
         </Property>
         <Property>
           <strong>Foreground:</strong>
-          <ColorPicker value={this.state.foregroundColor}
+          <ColorPicker color={this.state.foregroundColor}
             onChange={this.updateForegroundColor} />
         </Property>
         <Property>
           <strong>Background:</strong>
-          <ColorPicker value={this.state.backgroundColor}
+          <ColorPicker color={this.state.backgroundColor}
             onChange={this.updateBackgroundColor} />
         </Property>
         <Property>
