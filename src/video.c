@@ -55,6 +55,14 @@ void draw_rectangle(int x, int y, int width, int height) {
     draw_vertical_line(x, y + 1, height);
 }
 
+void draw_text(int x, int y, const char *s) {
+    size_t i;
+
+    for (i = 0; s[i] != 0; ++i) {
+        tb_change_cell(x + i, y, s[i], TB_DEFAULT, TB_DEFAULT);
+    }
+}
+
 void draw_screen(struct screen *screen) {
     int i, x, y;
 
@@ -71,14 +79,8 @@ void draw_screen(struct screen *screen) {
     // chat box
     draw_horizontal_line(0, WINDOW_HEIGHT + 2, tb_width());
     for (i = 0; i < ARRAYLEN(screen->log); ++i) {
-        size_t c;
-
-        for (c = 0; screen->log[i][c] != 0; ++c) {
-            tb_change_cell(c, WINDOW_HEIGHT + 3 + i, screen->log[i][c], TB_DEFAULT, TB_DEFAULT);
-        }
+        draw_text(0, WINDOW_HEIGHT + 3 + i, screen->log[i]);
     }
 
     tb_present();
-
-
 }

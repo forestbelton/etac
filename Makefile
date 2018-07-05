@@ -1,4 +1,4 @@
-CFILES := src/main.c src/video.c
+CFILES := src/main.c src/video.c src/map/map_default.c
 OFILES := $(CFILES:.c=.o)
 
 CFLAGS := -Iinclude -I/Users/case/homebrew/Cellar/termbox/1.1.2/include
