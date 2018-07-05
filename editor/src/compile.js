@@ -9,10 +9,11 @@ const compile = (grid, name) => {
 
             const ch = JSON.stringify(cell.value).replace(/^"(.*)"$/, '\'$1\'')
             const fg = colorCodeNames[cell.foregroundColor]
+            const fgBold = cell.bold ? ' | TB_BOLD' : ''
             const bg = colorCodeNames[cell.backgroundColor]
 
             cells.push(
-                `{ ${ch}, ${fg}, ${bg} }`
+                `{ ${ch}, ${fg + fgBold}, ${bg} }`
             )
         }
     }

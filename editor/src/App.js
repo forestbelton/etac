@@ -6,7 +6,12 @@ import { MAP_HEIGHT, MAP_WIDTH } from './constants'
 import Map from './Map'
 import ColorPicker from './color/ColorPicker'
 
-const Property = styled.div`
+const Property = styled(({ children, className, label }) => (
+  <div className={className}>
+    <strong>{label}:</strong>
+    {children}
+  </div>
+))`
   margin-bottom: 0.25rem;
 
   & > strong {
@@ -18,6 +23,15 @@ const Property = styled.div`
     outline: 0;
     border: 0;
     border-bottom: 1px solid #000;
+  }
+`
+
+const MapProperties = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  & > * {
+    align-self: flex-end;
   }
 `
 
@@ -36,7 +50,8 @@ class App extends Component {
           y,
           value: ' ',
           foregroundColor: 'transparent',
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
+          bold: false
         }
       }
     }
@@ -46,7 +61,8 @@ class App extends Component {
       cell: null,
       name: 'default',
       foregroundColor: 'transparent',
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      bold: false
     }
 
     this.updateCell = this.updateCell.bind(this)
@@ -55,6 +71,7 @@ class App extends Component {
     this.copyData = this.copyData.bind(this)
     this.updateForegroundColor = this.updateForegroundColor.bind(this)
     this.updateBackgroundColor = this.updateBackgroundColor.bind(this)
+    this.updateBold = this.updateBold.bind(this)
   }
 
   componentDidMount() {
@@ -73,6 +90,7 @@ class App extends Component {
         ...cell,
         foregroundColor: this.state.foregroundColor,
         backgroundColor: this.state.backgroundColor,
+        bold: this.state.bold,
         value: e.key
       }
 
@@ -136,28 +154,42 @@ class App extends Component {
     alert('Copied to clipboard!');
   }
 
+  updateBold(ev) {
+    const isBold = ev.target.checked
+
+    this.setState({
+      bold: isBold
+    })
+  }
+
   render() {
     return (
       <div className={this.props.className}>
-        <Property>
-          <strong>Map name:</strong>
-          <input type="text" value={this.state.name}
-            onChange={this.updateName} />
-        </Property>
-        <Property>
-          <strong>Foreground:</strong>
-          <ColorPicker color={this.state.foregroundColor}
-            onChange={this.updateForegroundColor} />
-        </Property>
-        <Property>
-          <strong>Background:</strong>
-          <ColorPicker color={this.state.backgroundColor}
-            onChange={this.updateBackgroundColor} />
-        </Property>
-        <Property>
-          <strong>Position:</strong>
-          <input type="text" readOnly value={this.getPosition()} />
-        </Property>
+        <MapProperties>
+          <div>
+            <Property label="Map name">
+              <input type="text" value={this.state.name}
+                onChange={this.updateName} />
+            </Property>
+            <Property label="Position">
+              <input type="text" readOnly value={this.getPosition()} />
+            </Property>
+          </div>
+          <div>
+            <Property label="Foreground">
+              <ColorPicker color={this.state.foregroundColor}
+                onChange={this.updateForegroundColor} />
+            </Property>
+            <Property label="Background">
+              <ColorPicker color={this.state.backgroundColor}
+                onChange={this.updateBackgroundColor} />
+            </Property>
+            <Property label="Bold">
+              <input type="checkbox" value={this.state.bold}
+                onChange={this.updateBold} />
+            </Property>
+          </div>
+        </MapProperties>
         <Map grid={this.state.grid} selected={this.state.cell} onSelect={this.selectCell} />
         <div>
           <button onClick={this.copyData}>Copy</button>
@@ -170,4 +202,5 @@ class App extends Component {
 export default styled(App)`
   margin: 5px;
   padding: 5px;
+  display: inline-block;
 `

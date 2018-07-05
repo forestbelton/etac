@@ -20,7 +20,8 @@ const Cell = styled(Text)`
     text-align: center;
     display: inline-block;
     box-sizing: border-box;
-    font-family: Monaco, Consolas, Iconsolata, monospace;
+    font-family: 'Fira Mono', monospace;
+    font-weight: ${props => props.cell.bold ? 'bold' : 'normal'};
     background: ${props => props.cell.backgroundColor};
     border: ${props => props.isSelected ? '2px solid red' : 'none'};
     padding: ${props => !props.isSelected ? '2px' : '0'};

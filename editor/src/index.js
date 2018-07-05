@@ -5,6 +5,8 @@ import { injectGlobal } from 'styled-components'
 import App from './App'
 
 injectGlobal`
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,700');
+
 body {
     margin: 0;
     padding: 0;
