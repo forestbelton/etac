@@ -16,7 +16,6 @@ int main() {
     screen.log[1] = "Test message 2";
 
     tb_init();
-    //tb_select_output_mode(TB_OUTPUT_256);
 
     draw_screen(&screen);
     tb_poll_event(&event);

@@ -1,6 +1,7 @@
 #ifndef ETAC_VIDEO_H_
 #define ETAC_VIDEO_H_
 
+#include <stddef.h>
 #include <termbox.h>
 
 #define LOG_LINE_COUNT 3
@@ -11,10 +12,15 @@
 #define INFO_WIDTH  54
 #define INFO_HEIGHT 19
 
+#define OBJECT_COUNT 54 * 14
+
 struct screen {
     struct tb_cell window[WINDOW_WIDTH * WINDOW_HEIGHT];
     struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
     char *log[LOG_LINE_COUNT];
+
+    struct tb_cell objects[OBJECT_COUNT];
+    size_t total_objects;
 };
 
 void init_screen(struct screen *screen);

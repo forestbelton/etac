@@ -1,16 +1,18 @@
-CFILES := src/main.c src/video.c src/map/map_default.c
+CC := gcc-7
+
+CFILES := $(shell find src -type f -name '*.c')
 OFILES := $(CFILES:.c=.o)
 
-CFLAGS := -Iinclude -I/Users/case/homebrew/Cellar/termbox/1.1.2/include
-LDFLAGS := -L/Users/case/homebrew/Cellar/termbox/1.1.2/lib -ltermbox
+CFLAGS := -Iinclude -I/Users/case/homebrew/Cellar/termbox/1.1.2/include -I/Users/case/homebrew/Cellar/lua/5.3.4_2/include
+LDFLAGS := -L/Users/case/homebrew/Cellar/termbox/1.1.2/lib -ltermbox -L/Users/case/homebrew/Cellar/lua/5.3.4_2/lib -llua
 
 .PHONY: clean
 
 etac: $(OFILES)
-	gcc $(LDFLAGS) $(OFILES) -o $@
+	$(CC) $(LDFLAGS) $(OFILES) -o $@
 
 %.o: %.c
-	gcc $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	rm etac
