@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <termbox.h>
+
 #include "game.h"
 #include "video.h"
 
@@ -12,7 +13,9 @@ int main() {
     struct tb_event event;
 
     struct game game;
-    game_new(&game);
+    if (game_new(&game) == -1) {
+        exit(EXIT_FAILURE);
+    }
 
     const object_id swan_id = game_add_object(&game, "script/swan.lua");
     if (swan_id == -1) {

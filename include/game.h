@@ -33,8 +33,9 @@ struct game {
 /*
  * Initialize a new game.
  * @param game The game structure to initialize.
+ * @return 0 if initialization succeeded, otherwise -1.
  */
-void game_new(struct game *game);
+int game_new(struct game *game);
 
 /*
  * Add an object to the game.
