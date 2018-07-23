@@ -1,3 +1,6 @@
+CC = @CC@
+LD = @LD@
+
 CFILES := $(shell find src -type f -name '*.c')
 OFILES := $(CFILES:.c=.o)
 
@@ -7,7 +10,7 @@ LDFLAGS := $(LIBS) -ltermbox -llua
 .PHONY: clean
 
 etac: $(OFILES)
-	$(CC) $(OFILES) $(LDFLAGS) -o $@
+	$(LD) $(OFILES) $(LDFLAGS) -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

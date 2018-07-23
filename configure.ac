@@ -1,0 +1,6 @@
+AC_INIT(etac, 0.0.1)
+
+AC_LANG(C)
+AC_PROG_CC
+
+AC_OUTPUT(Makefile)
