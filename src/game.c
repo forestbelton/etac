@@ -53,7 +53,7 @@ int game_new(struct game *game, const char *match_script) {
 
     // TODO: Remove
     memcpy(&game->screen->window[0], &map_default[0], sizeof game->screen->window);
-    game_log(game, TB_DEFAULT, TB_DEFAULT, "Test message 1");
+    game_log(game, TB_DEFAULT, TB_DEFAULT, "Welcome to etac v0.0.1");
     game_log(game, TB_RED, TB_DEFAULT, "You have died!");
 
     return 0;
