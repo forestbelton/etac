@@ -1,6 +1,7 @@
 Entity = {
     id = -1,
-    name = "Game Object"
+    name = "Game Object",
+    sprite = "?"
 }
 
 function Entity:new(o)

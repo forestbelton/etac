@@ -18,7 +18,7 @@ end
 
 function Match:add (entity)
     local entityClass = require(entity.scriptFile)
-        local entity = entityClass.new({
+    local entity = entityClass.new({
         id = self.nextId,
         x = entity.x,
         y = entity.y
