@@ -1,3 +1,5 @@
+include config.mk
+
 CFILES := $(shell find src -type f -name '*.c')
 OFILES := $(CFILES:.c=.o)
 
@@ -13,5 +15,5 @@ etac: $(OFILES)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f etac
+	$(RM) etac
 	find . -type f -name '*.o' -print -delete
