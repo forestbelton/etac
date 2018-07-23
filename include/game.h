@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "ui/screen.h"
+
 #define MAX_OBJECTS 100
 
 /*
@@ -12,6 +14,7 @@
  */
 struct game {
     lua_State *env;
+    struct screen *screen;
 };
 
 /*
@@ -21,5 +24,10 @@ struct game {
  * @return 0 if initialization succeeded, otherwise -1.
  */
 int game_new(struct game *game, const char *match_script);
+
+/*
+ * Draw the game to the screen.
+ */
+void game_draw(struct game *game);
 
 #endif

@@ -23,7 +23,7 @@ struct screen {
     size_t total_objects;
 };
 
-void init_screen(struct screen *screen);
-void draw_screen(struct screen *screen);
+void screen_init(struct screen *screen);
+void screen_draw(struct screen *screen);
 
 #endif

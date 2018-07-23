@@ -1,6 +1,6 @@
 #include "ui/draw.h"
+#include "ui/screen.h"
 #include "util.h"
-#include "video.h"
 
 #define ARRAYLEN(arr) ((sizeof (arr)) / (sizeof (arr)[0]))
 
@@ -10,7 +10,7 @@ const struct tb_cell EMPTY_CELL = {
     TB_DEFAULT
 };
 
-void init_screen(struct screen *screen) {
+void screen_init(struct screen *screen) {
     size_t i;
 
     for (i = 0; i < ARRAYLEN(screen->window); ++i) {
@@ -28,7 +28,7 @@ void init_screen(struct screen *screen) {
     screen->total_objects = 0;
 }
 
-void draw_screen(struct screen *screen) {
+void screen_draw(struct screen *screen) {
     size_t i;
 
     tb_clear();

@@ -2,10 +2,15 @@
 #include <lua.h>
 #include <lualib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "game.h"
+#include "ui/screen.h"
 
 #define PROLOGUE_SCRIPT "script/prologue.lua"
+
+extern struct tb_cell map_default[];
 
 int game_new(struct game *game, const char *match_script) {
     game->env = luaL_newstate();
@@ -35,5 +40,22 @@ int game_new(struct game *game, const char *match_script) {
         return -1;
     }
 
+    game->screen = malloc(sizeof *game->screen);
+    if (game->screen == NULL) {
+        fprintf(stderr, "error: could not allocate screen");
+        lua_close(game->env);
+
+        return -1;
+    }
+
+    screen_init(game->screen);
+    memcpy(&game->screen->window[0], &map_default[0], sizeof game->screen->window);
+    game->screen->log[0] = "Test message 1";
+    game->screen->log[1] = "Test message 2";
+
     return 0;
+}
+
+void game_draw(struct game *game) {
+    screen_draw(game->screen);
 }
