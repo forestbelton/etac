@@ -49,6 +49,8 @@ int game_new(struct game *game, const char *match_script) {
     }
 
     screen_init(game->screen);
+
+    // TODO: Remove
     memcpy(&game->screen->window[0], &map_default[0], sizeof game->screen->window);
     game_log(game, "Test message 1");
     game_log(game, "Test message 2");
