@@ -31,3 +31,5 @@ $ docker build -t etac .
 $ docker run -it etac /bin/sh
 # ./etac
 ```
+
+**NOTE:** `docker run -it etac` does not yet work, see #1.
