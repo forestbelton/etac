@@ -43,8 +43,6 @@ void screen_draw(struct screen *screen) {
 
     struct log_node *node = screen->log;
     for (i = 0; node != NULL && i < LOG_LINE_COUNT; ++i) {
-        fprintf(stderr, "writing log entry");
-
         draw_string(0, WINDOW_HEIGHT + 3 + i, node->content);
         node = node->next;
     }
