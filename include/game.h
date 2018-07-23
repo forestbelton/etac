@@ -30,4 +30,9 @@ int game_new(struct game *game, const char *match_script);
  */
 void game_draw(struct game *game);
 
+/*
+ * Add a log line to the game.
+ */
+void game_log(struct game *game, const char *fmt, ...);
+
 #endif

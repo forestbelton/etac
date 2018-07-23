@@ -50,12 +50,40 @@ int game_new(struct game *game, const char *match_script) {
 
     screen_init(game->screen);
     memcpy(&game->screen->window[0], &map_default[0], sizeof game->screen->window);
-    game->screen->log[0] = "Test message 1";
-    game->screen->log[1] = "Test message 2";
+    game_log(game, "Test message 1");
+    game_log(game, "Test message 2");
 
     return 0;
 }
 
 void game_draw(struct game *game) {
     screen_draw(game->screen);
+}
+
+void game_log(struct game *game, const char *fmt, ...) {
+    va_list args;
+    int length = 0;
+    struct log_node *log_entry = malloc(sizeof *log_entry);
+
+    if (log_entry == NULL) {
+        fprintf(stderr, "error: could not allocate log entry");
+        exit(EXIT_FAILURE);
+    }
+
+    va_start(args, fmt);
+    length = vsnprintf(log_entry->content, 0, fmt, args);
+    va_end(args);
+
+    log_entry->content = malloc(length + 1);
+    if (log_entry->content == NULL) {
+        fprintf(stderr, "error: could not allocate log entry content");
+        exit(EXIT_FAILURE);
+    }
+
+    va_start(args, fmt);
+    vsnprintf(log_entry->content, length + 1, fmt, args);
+    va_end(args);
+
+    log_entry->next = game->screen->log;
+    game->screen->log = log_entry;
 }

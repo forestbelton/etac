@@ -21,10 +21,7 @@ void screen_init(struct screen *screen) {
         screen->info[i] = EMPTY_CELL;
     }
 
-    for (i = 0; i < ARRAYLEN(screen->log); ++i) {
-        screen->log[i] = "";
-    }
-
+    screen->log = NULL;
     screen->total_objects = 0;
 }
 
@@ -43,8 +40,13 @@ void screen_draw(struct screen *screen) {
 
     // chat box
     draw_horizontal_line(0, WINDOW_HEIGHT + 2, tb_width());
-    for (i = 0; i < ARRAYLEN(screen->log); ++i) {
-        draw_string(0, WINDOW_HEIGHT + 3 + i, screen->log[i]);
+
+    struct log_node *node = screen->log;
+    for (i = 0; node != NULL && i < LOG_LINE_COUNT; ++i) {
+        fprintf(stderr, "writing log entry");
+
+        draw_string(0, WINDOW_HEIGHT + 3 + i, node->content);
+        node = node->next;
     }
 
     tb_present();

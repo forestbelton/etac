@@ -14,10 +14,15 @@
 
 #define OBJECT_COUNT 54 * 14
 
+struct log_node {
+    char *content;
+    struct log_node *next;
+};
+
 struct screen {
     struct tb_cell window[WINDOW_WIDTH * WINDOW_HEIGHT];
     struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
-    char *log[LOG_LINE_COUNT];
+    struct log_node *log;
 
     struct tb_cell objects[OBJECT_COUNT];
     size_t total_objects;
