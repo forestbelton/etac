@@ -42,12 +42,12 @@ function Match:enqueue (entityId)
     }
 
     -- If there are other elements, insert increasing by time.
-    -- for i = 1, #self.queue do
-    --     #if time < self.queue[i].time then
-    --         table.insert(self.queue, i, entry)
-    --         return
-    --     end
-    -- end
+    for i = 1, #self.queue do
+        if entry.time < self.queue[i].time then
+            table.insert(self.queue, i, entry)
+            return
+        end
+    end
 
     self.queue[#self.queue + 1] = entry
 end
