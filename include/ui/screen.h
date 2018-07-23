@@ -22,7 +22,6 @@ struct log_node {
 };
 
 struct screen {
-    struct tb_cell window[WINDOW_WIDTH * WINDOW_HEIGHT];
     struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
     struct log_node *log;
 
@@ -31,6 +30,6 @@ struct screen {
 };
 
 void screen_init(struct screen *screen);
-void screen_draw(struct screen *screen);
+void screen_draw(struct screen *screen, struct tb_cell *window);
 
 #endif

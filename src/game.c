@@ -50,17 +50,13 @@ int game_new(struct game *game, const char *match_script) {
     }
 
     screen_init(game->screen);
-
-    // TODO: Remove
-    memcpy(&game->screen->window[0], &map_default[0], sizeof game->screen->window);
     game_log(game, TB_DEFAULT, TB_DEFAULT, "Welcome to etac v0.0.1");
-    game_log(game, TB_RED, TB_DEFAULT, "You have died!");
 
     return 0;
 }
 
 void game_draw(struct game *game) {
-    screen_draw(game->screen);
+    screen_draw(game->screen, &map_default[0]);
 }
 
 void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
