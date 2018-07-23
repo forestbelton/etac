@@ -1,6 +1,7 @@
 local Match = require('script/match')
 
 return Match:new({
+    map = "default",
     entities = {
         {
             x = 5,

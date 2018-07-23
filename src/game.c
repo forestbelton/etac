@@ -7,6 +7,7 @@
 #include <termbox.h>
 
 #include "game.h"
+#include "map/map.h"
 #include "ui/screen.h"
 
 #define PROLOGUE_SCRIPT "script/prologue.lua"
@@ -43,7 +44,7 @@ int game_new(struct game *game, const char *match_script) {
 
     game->screen = malloc(sizeof *game->screen);
     if (game->screen == NULL) {
-        fprintf(stderr, "error: could not allocate screen");
+        fprintf(stderr, "error: could not allocate screen\n");
         lua_close(game->env);
 
         return -1;
@@ -56,7 +57,29 @@ int game_new(struct game *game, const char *match_script) {
 }
 
 void game_draw(struct game *game) {
-    screen_draw(game->screen, &map_default[0]);
+    if (!lua_istable(game->env, -1)) {
+        fprintf(stderr, "error: game object not on top of lua stack\n");
+        exit(EXIT_FAILURE);
+    }
+
+    lua_pushvalue(game->env, -1);
+    lua_pushstring(game->env, "map");
+    lua_gettable(game->env, -2);
+
+    if (!lua_isstring(game->env, -1)) {
+        fprintf(stderr, "error: map name is not a string\n");
+        exit(EXIT_FAILURE);
+    }
+
+    const char *map_name = lua_tostring(game->env, -1);
+    const struct tb_cell *map_data = map_by_name(map_name);
+
+    if (map_data == NULL) {
+        fprintf(stderr, "error: data for map '%s' not found\n", map_name);
+        exit(EXIT_FAILURE);
+    }
+
+    screen_draw(game->screen, map_data);
 }
 
 void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
@@ -65,7 +88,7 @@ void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
     struct log_node *log_entry = malloc(sizeof *log_entry);
 
     if (log_entry == NULL) {
-        fprintf(stderr, "error: could not allocate log entry");
+        fprintf(stderr, "error: could not allocate log entry\n");
         exit(EXIT_FAILURE);
     }
 
@@ -75,7 +98,7 @@ void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
 
     log_entry->content = malloc(length + 1);
     if (log_entry->content == NULL) {
-        fprintf(stderr, "error: could not allocate log entry content");
+        fprintf(stderr, "error: could not allocate log entry content\n");
         exit(EXIT_FAILURE);
     }
 

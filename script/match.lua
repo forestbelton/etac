@@ -1,7 +1,8 @@
 local Match = {
     queue = {},
     entities = {},
-    nextId = 0
+    nextId = 0,
+    map = "none"
 }
 
 function Match:new (o)

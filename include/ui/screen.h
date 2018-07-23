@@ -30,6 +30,6 @@ struct screen {
 };
 
 void screen_init(struct screen *screen);
-void screen_draw(struct screen *screen, struct tb_cell *window);
+void screen_draw(const struct screen *screen, const struct tb_cell *window);
 
 #endif

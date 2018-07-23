@@ -21,7 +21,7 @@ void screen_init(struct screen *screen) {
     screen->total_objects = 0;
 }
 
-void screen_draw(struct screen *screen, struct tb_cell *window) {
+void screen_draw(const struct screen *screen, const struct tb_cell *window) {
     size_t i;
 
     tb_clear();
