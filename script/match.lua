@@ -1,4 +1,5 @@
 local Match = {
+    queue = {},
     entities = {},
     entity_descriptions = {},
     map = "none"
@@ -19,7 +20,7 @@ end
 
 function Match:add (entity)
     local entityClass = require(entity.script)
-    local entity = entityClass.new({
+    local entity = entityClass:new({
         id = #self.entities + 1,
         x = entity.x,
         y = entity.y
@@ -41,12 +42,12 @@ function Match:enqueue (entityId)
     }
 
     -- If there are other elements, insert increasing by time.
-    for i = 1, #self.queue do
-        if time < self.queue[i].time then
-            table.insert(self.queue, i, entry)
-            return
-        end
-    end
+    -- for i = 1, #self.queue do
+    --     #if time < self.queue[i].time then
+    --         table.insert(self.queue, i, entry)
+    --         return
+    --     end
+    -- end
 
     self.queue[#self.queue + 1] = entry
 end

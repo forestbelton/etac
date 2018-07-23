@@ -24,12 +24,10 @@ struct log_node {
 struct screen {
     struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
     struct log_node *log;
-
-    struct tb_cell objects[OBJECT_COUNT];
-    size_t total_objects;
 };
 
 void screen_init(struct screen *screen);
-void screen_draw(const struct screen *screen, const struct tb_cell *window);
+void screen_draw_window(const struct screen *screen, const struct tb_cell *window);
+void screen_draw_object(const struct screen *screen, struct tb_cell object, size_t x, size_t y);
 
 #endif

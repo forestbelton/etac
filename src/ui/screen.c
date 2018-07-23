@@ -17,13 +17,14 @@ void screen_init(struct screen *screen) {
     }
 
     screen->log = NULL;
-    screen->total_objects = 0;
 }
 
-void screen_draw(const struct screen *screen, const struct tb_cell *window) {
-    size_t i;
+void screen_draw_object(const struct screen *screen, struct tb_cell object, size_t x, size_t y) {
+    tb_put_cell(x + 2, y + 1, &object);
+}
 
-    tb_clear();
+void screen_draw_window(const struct screen *screen, const struct tb_cell *window) {
+    size_t i;
 
     // window box
     draw_rectangle(1, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -41,6 +42,4 @@ void screen_draw(const struct screen *screen, const struct tb_cell *window) {
         draw_string_styled(0, WINDOW_HEIGHT + 3 + (LOG_LINE_COUNT - i), node->content, node->fg, node->bg);
         node = node->next;
     }
-
-    tb_present();
 }
