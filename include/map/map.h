@@ -10,6 +10,6 @@
  */
 struct tb_cell *map_by_name(const char *name);
 
-extern struct tb_cell map_default[];
+extern struct tb_cell map_river_asymmetric[];
 
 #endif

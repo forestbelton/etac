@@ -1,6 +1,6 @@
 #include <termbox.h>
 
-struct tb_cell map_default[] = {
+struct tb_cell map_river_asymmetric[] = {
     { ' ', TB_WHITE, TB_GREEN },
     { ' ', TB_WHITE, TB_GREEN },
     { ',', TB_WHITE, TB_GREEN },

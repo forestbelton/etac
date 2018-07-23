@@ -7,7 +7,7 @@ struct map_entry {
 };
 
 struct map_entry map_entries[] = {
-    { "default", &map_default[0] }
+    { "river_asymmetric", &map_river_asymmetric[0] }
 };
 
 struct tb_cell *map_by_name(const char *name) {
