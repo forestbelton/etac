@@ -1,7 +1,6 @@
 local Match = {
-    queue = {},
     entities = {},
-    nextId = 0,
+    entity_descriptions = {},
     map = "none"
 }
 
@@ -9,9 +8,10 @@ function Match:new (o)
     o = o or {}
     setmetatable(o, self)
 
-    for i = 1, #self.entities do
-        local entityId = self:add(self.entities[i])
-        self:enqueue(entityId)
+    self.__index = self
+    for i = 1, #o.entity_descriptions do
+        local entityId = o:add(o.entity_descriptions[i])
+        o:enqueue(entityId)
     end
 
     return o
@@ -20,14 +20,12 @@ end
 function Match:add (entity)
     local entityClass = require(entity.script)
     local entity = entityClass.new({
-        id = self.nextId,
+        id = #self.entities + 1,
         x = entity.x,
         y = entity.y
     })
 
     self.entities[entity.id] = entity
-    self.nextId = self.nextId + 1
-
     return entity.id
 end
 

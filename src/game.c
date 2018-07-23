@@ -9,6 +9,7 @@
 #include "game.h"
 #include "map/map.h"
 #include "ui/screen.h"
+#include "util.h"
 
 #define PROLOGUE_SCRIPT "script/prologue.lua"
 
@@ -24,31 +25,14 @@ int game_new(struct game *game, const char *match_script) {
 
     const int load_error = luaL_loadfile(game->env, PROLOGUE_SCRIPT)
         || lua_pcall(game->env, 0, 0, 0);
-
-    if (load_error) {
-        fprintf(stderr, "error (lua): %s\n", lua_tostring(game->env, -1));
-        lua_pop(game->env, 1);
-
-        return -1;
-    }
+    verify(!load_error, "[lua]: %s", lua_tostring(game->env, -1));
 
     const int match_load_error = luaL_loadfile(game->env, match_script)
         || lua_pcall(game->env, 0, 1, 0);
-
-    if (match_load_error) {
-        fprintf(stderr, "error (lua): %s\n", lua_tostring(game->env, -1));
-        lua_pop(game->env, 1);
-
-        return -1;
-    }
+    verify(!match_load_error, "[lua]: %s", lua_tostring(game->env, -1));
 
     game->screen = malloc(sizeof *game->screen);
-    if (game->screen == NULL) {
-        fprintf(stderr, "error: could not allocate screen\n");
-        lua_close(game->env);
-
-        return -1;
-    }
+    verify(game->screen != NULL, "could not allocate screen");
 
     screen_init(game->screen);
     game_log(game, TB_DEFAULT, TB_DEFAULT, "Welcome to etac v0.0.1");
@@ -56,30 +40,67 @@ int game_new(struct game *game, const char *match_script) {
     return 0;
 }
 
-void game_draw(struct game *game) {
-    if (!lua_istable(game->env, -1)) {
-        fprintf(stderr, "error: game object not on top of lua stack\n");
-        exit(EXIT_FAILURE);
+void game_dump_stack(struct game *game) {
+    int i;
+    int top = lua_gettop(game->env);
+
+    for (i = 1; i <= top; ++i) {
+        int t = lua_type(game->env, i);
+
+        switch (t) {
+            case LUA_TSTRING:
+                printf("`%s`", lua_tostring(game->env, i));
+                break;
+
+            case LUA_TBOOLEAN:
+                printf(lua_toboolean(game->env, i) ? "true" : "false");
+                break;
+
+            case LUA_TNUMBER:  /* numbers */
+                printf("%g", lua_tonumber(game->env, i));
+                break;
+
+            default:  /* other values */
+                printf("%s", lua_typename(game->env, t));
+                break;
+        }
+
+        putchar(' ');
     }
 
-    lua_pushvalue(game->env, -1);
+    putchar('\n');
+}
+
+void game_draw(struct game *game) {
+    verify(lua_istable(game->env, -1), "game object not on top of stack");
+
+    // Draw the game map
     lua_pushstring(game->env, "map");
     lua_gettable(game->env, -2);
-
-    if (!lua_isstring(game->env, -1)) {
-        fprintf(stderr, "error: map name is not a string\n");
-        exit(EXIT_FAILURE);
-    }
+    verify(lua_isstring(game->env, -1), "map name not a string");
 
     const char *map_name = lua_tostring(game->env, -1);
     const struct tb_cell *map_data = map_by_name(map_name);
 
-    if (map_data == NULL) {
-        fprintf(stderr, "error: data for map '%s' not found\n", map_name);
-        exit(EXIT_FAILURE);
-    }
-
+    verify(map_data != NULL, "data for map '%s' not found", map_name);
     screen_draw(game->screen, map_data);
+
+    // Draw the game entities
+    lua_pop(game->env, 1);
+    lua_pushstring(game->env, "entities");
+    lua_gettable(game->env, -2);
+    verify(lua_istable(game->env, -1), "entity list is not a table");
+
+    lua_pushnil(game->env);
+    while (lua_next(game->env, -2) != 0) {
+        lua_pushvalue(game->env, -2);
+        lua_pushstring(game->env, "x");
+        lua_gettable(game->env, -2);
+
+        const lua_Number x = lua_tonumber(game->env, -1);
+
+        fprintf(stderr, "(%f, null)\n", x);
+    }
 }
 
 void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
