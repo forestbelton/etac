@@ -5,15 +5,17 @@
 
 #include "game.h"
 
-#define MAIN_SCRIPT_FILE "script/main.lua"
+#define PROLOGUE_SCRIPT "script/prologue.lua"
 
-int game_new(struct game *game) {
+int game_new(struct game *game, const char *match_script) {
     game->env = luaL_newstate();
     if (game->env == NULL) {
         return -1;
     }
 
-    const int load_error = luaL_loadfile(game->env, MAIN_SCRIPT_FILE)
+    luaL_openlibs(game->env);
+
+    const int load_error = luaL_loadfile(game->env, PROLOGUE_SCRIPT)
         || lua_pcall(game->env, 0, 0, 0);
 
     if (load_error) {
@@ -23,35 +25,15 @@ int game_new(struct game *game) {
         return -1;
     }
 
-    game->total_objects = 0;
-    game->next_object_id = 0;
+    const int match_load_error = luaL_loadfile(game->env, match_script)
+        || lua_pcall(game->env, 0, 1, 0);
+
+    if (match_load_error) {
+        fprintf(stderr, "error (lua): %s\n", lua_tostring(game->env, -1));
+        lua_pop(game->env, 1);
+
+        return -1;
+    }
 
     return 0;
-}
-
-object_id game_add_object(struct game *game, const char *script_file) {
-    // no more objects allowed
-    if (game->total_objects >= MAX_OBJECTS) {
-        return -1;
-    }
-
-    const int load_error = luaL_loadfile(game->env, script_file)
-        || lua_pcall(game->env, 0, 0, 0);
-
-    // could not load script
-    if (load_error) {
-        fprintf(stderr, "error (lua): %s\n", lua_tostring(game->env, -1));
-        lua_pop(game->env, 1);
-
-        return -1;
-    }
-
-    const object_id id = game->next_object_id++;
-    // TODO: Instantiate Lua object with this ID.
-
-    return id;
-}
-
-void game_remove_object(struct game *game, object_id id) {
-    // TODO: Remove Lua object with this ID.
 }

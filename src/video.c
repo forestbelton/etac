@@ -2,6 +2,8 @@
 #include "util.h"
 #include "video.h"
 
+#define ARRAYLEN(arr) ((sizeof (arr)) / (sizeof (arr)[0]))
+
 const struct tb_cell EMPTY_CELL = {
     ' ',
     TB_DEFAULT,

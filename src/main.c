@@ -13,12 +13,7 @@ int main() {
     struct tb_event event;
 
     struct game game;
-    if (game_new(&game) == -1) {
-        exit(EXIT_FAILURE);
-    }
-
-    const object_id swan_id = game_add_object(&game, "script/swan.lua");
-    if (swan_id == -1) {
+    if (game_new(&game, "script/match/siege.lua") == -1) {
         exit(EXIT_FAILURE);
     }
 
