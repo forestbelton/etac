@@ -11,7 +11,7 @@ function Match:new (o)
 
     for i = 1, #self.entities do
         local entityId = self:add(self.entities[i])
-        self:enqueueEntity(entityId)
+        self:enqueue(entityId)
     end
 
     return o
@@ -36,11 +36,32 @@ function Match:remove (entityId)
 end
 
 function Match:enqueue (entityId)
-    -- TODO: Add to turn queue
+    local entity = self.entities[entityId]
+    local entry = {
+        entity = entity,
+        time = entity:next_action_time()
+    }
+
+    -- If there are other elements, insert increasing by time.
+    for i = 1, #self.queue do
+        if time < self.queue[i].time then
+            table.insert(self.queue, i, entry)
+            return
+        end
+    end
+
+    self.queue[#self.queue + 1] = entry
 end
 
 function Match:dequeue (entityId)
-    -- TODO: Pop next entity off turn queue
+    local next_entry = table.remove(self.queue, 1)
+
+    for i = 1, #self.queue do
+        local entry = self.queue[i]
+        entry.time = math.max(entry.time - next_entry.time, 0)
+    end
+
+    return next_entry.entity
 end
 
 return Match

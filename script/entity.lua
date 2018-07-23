@@ -11,4 +11,8 @@ function Entity:new(o)
     return o
 end
 
+function Entity:next_action_time()
+    return 100
+end
+
 return Entity
