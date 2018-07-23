@@ -27,12 +27,18 @@ int game_new(struct game *game, const char *match_script);
 
 /*
  * Draw the game to the screen.
+ * @param game The game structure to draw.
  */
 void game_draw(struct game *game);
 
 /*
  * Add a log line to the game.
+ * @param game The game structure to log to.
+ * @param fg The foreground color of the text.
+ * @param bg The background color of the text.
+ * @param fmt The format string for the log line.
+ * @param ... The format string arguments.
  */
-void game_log(struct game *game, const char *fmt, ...);
+void game_log(struct game *game, int fg, int bg, const char *fmt, ...);
 
 #endif

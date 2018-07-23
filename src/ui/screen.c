@@ -43,7 +43,7 @@ void screen_draw(struct screen *screen) {
 
     struct log_node *node = screen->log;
     for (i = 0; node != NULL && i < LOG_LINE_COUNT; ++i) {
-        draw_string(0, WINDOW_HEIGHT + 3 + i, node->content);
+        draw_string_styled(0, WINDOW_HEIGHT + 3 + (LOG_LINE_COUNT - i), node->content, node->fg, node->bg);
         node = node->next;
     }
 

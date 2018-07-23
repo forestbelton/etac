@@ -15,6 +15,8 @@
 #define OBJECT_COUNT 54 * 14
 
 struct log_node {
+    int fg;
+    int bg;
     char *content;
     struct log_node *next;
 };

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <termbox.h>
 
 #include "game.h"
 #include "ui/screen.h"
@@ -52,8 +53,8 @@ int game_new(struct game *game, const char *match_script) {
 
     // TODO: Remove
     memcpy(&game->screen->window[0], &map_default[0], sizeof game->screen->window);
-    game_log(game, "Test message 1");
-    game_log(game, "Test message 2");
+    game_log(game, TB_DEFAULT, TB_DEFAULT, "Test message 1");
+    game_log(game, TB_RED, TB_DEFAULT, "You have died!");
 
     return 0;
 }
@@ -62,7 +63,7 @@ void game_draw(struct game *game) {
     screen_draw(game->screen);
 }
 
-void game_log(struct game *game, const char *fmt, ...) {
+void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
     va_list args;
     int length = 0;
     struct log_node *log_entry = malloc(sizeof *log_entry);
@@ -86,6 +87,9 @@ void game_log(struct game *game, const char *fmt, ...) {
     vsnprintf(log_entry->content, length + 1, fmt, args);
     va_end(args);
 
+    log_entry->fg = fg;
+    log_entry->bg = bg;
     log_entry->next = game->screen->log;
+
     game->screen->log = log_entry;
 }
