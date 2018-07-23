@@ -22,3 +22,12 @@ Usage
 ```bash
 $ ./etac
 ```
+
+Docker build
+------------
+
+```bash
+$ docker build -t etac .
+$ docker run -it etac /bin/sh
+# ./etac
+```

@@ -1,6 +1,5 @@
 #include "ui/draw.h"
 #include "ui/screen.h"
-#include "util.h"
 
 #define ARRAYLEN(arr) ((sizeof (arr)) / (sizeof (arr)[0]))
 
