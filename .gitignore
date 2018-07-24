@@ -7,3 +7,4 @@ config.log
 config.status
 autom4te.cache/
 etac
+build.sh
