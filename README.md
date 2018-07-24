@@ -13,7 +13,8 @@ Build
 -----
 
 ```bash
-$ make clean && make
+$ ./configure
+$ make
 ```
 
 Usage
