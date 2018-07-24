@@ -33,9 +33,19 @@ int game_new(struct game *game, const char *match_script) {
 
     game->screen = malloc(sizeof *game->screen);
     verify(game->screen != NULL, "could not allocate screen");
-
     screen_init(game->screen);
+
     game_log(game, "Welcome to etac v0.0.1");
+
+    lua_pushstring(game->env, "title");
+    lua_gettable(game->env, -2);
+    game_log(game, "loaded match: %s", lua_tostring(game->env, -1));
+    lua_pop(game->env, 1);
+
+    lua_pushstring(game->env, "description");
+    lua_gettable(game->env, -2);
+    game_log(game, "%s", lua_tostring(game->env, -1));
+    lua_pop(game->env, 1);
 
     return 0;
 }
