@@ -101,14 +101,14 @@ void game_draw(struct game *game) {
         lua_gettable(game->env, -3);
         verify(lua_isnumber(game->env, -1), "entity.x is not a number");
 
-        const lua_Number x = lua_tonumber(game->env, -1);
+        const size_t x = (size_t)lua_tonumber(game->env, -1);
         lua_pop(game->env, 1);
 
         lua_pushstring(game->env, "y");
         lua_gettable(game->env, -3);
         verify(lua_isnumber(game->env, -1), "entity.y is not a number");
 
-        const lua_Number y = lua_tonumber(game->env, -1);
+        const size_t y = (size_t)lua_tonumber(game->env, -1);
         lua_pop(game->env, 1);
 
         lua_pushstring(game->env, "sprite");
@@ -117,9 +117,10 @@ void game_draw(struct game *game) {
 
         const char *sprite = lua_tostring(game->env, -1);
         struct tb_cell object = { *sprite, TB_DEFAULT, TB_DEFAULT };
+        object.bg = map_data[WINDOW_WIDTH * y + x].bg;
 
         lua_pop(game->env, 3);
-        screen_draw_object(game->screen, object, (size_t)x, (size_t)y);
+        screen_draw_object(game->screen, object, x, y);
     }
 
     tb_present();
