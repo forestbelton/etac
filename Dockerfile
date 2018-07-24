@@ -1,6 +1,13 @@
 FROM alpine
 
-RUN apk add --no-cache build-base python ca-certificates git lua-dev
+RUN apk add --no-cache \
+    build-base         \
+    python             \
+    ca-certificates    \
+    git                \
+    lua-dev            \
+    autoconf
+
 RUN update-ca-certificates
 
 WORKDIR /termbox
@@ -12,8 +19,10 @@ RUN ./waf configure --prefix=/usr \
 WORKDIR /app
 COPY . .
 
-RUN make clean
-RUN make
+RUN autoconf       \
+    && ./configure \
+    && make clean  \
+    && make
 
 ENV TERM xterm
 CMD ["./etac"]
