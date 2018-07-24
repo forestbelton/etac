@@ -13,6 +13,7 @@ Build
 -----
 
 ```bash
+$ autoconf
 $ ./configure
 $ make
 ```
