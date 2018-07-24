@@ -2,7 +2,9 @@ local Match = {
     queue = {},
     entities = {},
     entity_descriptions = {},
-    map = "none"
+    map = "none",
+    title = "game match",
+    description = "just another game match"
 }
 
 function Match:new (o)
