@@ -31,6 +31,8 @@ int game_new(struct game *game, const char *match_script);
  */
 void game_draw(struct game *game);
 
+#define game_log(game, fmt, ...) game_log_styled(game, TB_DEFAULT, TB_DEFAULT, fmt,##__VA_ARGS__)
+
 /*
  * Add a log line to the game.
  * @param game The game structure to log to.
@@ -39,6 +41,6 @@ void game_draw(struct game *game);
  * @param fmt The format string for the log line.
  * @param ... The format string arguments.
  */
-void game_log(struct game *game, int fg, int bg, const char *fmt, ...);
+void game_log_styled(struct game *game, int fg, int bg, const char *fmt, ...);
 
 #endif

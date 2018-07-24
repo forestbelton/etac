@@ -35,7 +35,7 @@ int game_new(struct game *game, const char *match_script) {
     verify(game->screen != NULL, "could not allocate screen");
 
     screen_init(game->screen);
-    game_log(game, TB_DEFAULT, TB_DEFAULT, "Welcome to etac v0.0.1");
+    game_log(game, "Welcome to etac v0.0.1");
 
     return 0;
 }
@@ -126,7 +126,7 @@ void game_draw(struct game *game) {
     tb_present();
 }
 
-void game_log(struct game *game, int fg, int bg, const char *fmt, ...) {
+void game_log_styled(struct game *game, int fg, int bg, const char *fmt, ...) {
     va_list args;
     int length = 0;
     struct log_node *log_entry = malloc(sizeof *log_entry);
