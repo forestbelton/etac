@@ -15,4 +15,7 @@ function Entity:next_action_time()
     return 100
 end
 
+function Entity:take_turn(match)
+end
+
 return Entity
