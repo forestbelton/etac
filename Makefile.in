@@ -1,5 +1,5 @@
 CC = @CC@
-CFLAGS = -Iinclude @CFLAGS@
+CFLAGS = -Iinclude -Wall -Wextra -Werror -std=gnu99 -pedantic @CFLAGS@
 
 LD = @CC@
 LDFLAGS = @LDFLAGS@
