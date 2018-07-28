@@ -35,16 +35,16 @@ void screen_draw_window(const struct screen *screen, const struct tb_cell *windo
     draw_horizontal_line(0, WINDOW_HEIGHT + 2, tb_width());
 }
 
-void screen_draw_logs(const struct screen *screen, lua_State *env) {
-    verify(lua_istable(env, -1), "game object not on top of stack");
+void screen_draw_logs(lua_State *env) {
+    verify0(lua_istable(env, -1), "game object not on top of stack");
 
     lua_pushstring(env, "log_entries");
     lua_gettable(env, -2);
-    verify(lua_istable(env, -1), "log_entries is not a table");
+    verify0(lua_istable(env, -1), "log_entries is not a table");
 
     lua_pushnil(env);
     for (size_t i = 0; i < LOG_LINE_COUNT && lua_next(env, -2) != 0; i++) {
-        verify(lua_isstring(env, -1), "log entry is not a string");
+        verify0(lua_isstring(env, -1), "log entry is not a string");
         draw_string(0, WINDOW_HEIGHT + 3 + (LOG_LINE_COUNT - i), lua_tostring(env, -1));
         lua_pop(env, 1);
     }

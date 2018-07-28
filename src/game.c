@@ -86,7 +86,7 @@ void game_draw(struct game *game) {
     screen_draw_window(game->screen, map_data);
     lua_pop(game->env, 1);
 
-    screen_draw_logs(game->screen, game->env);
+    screen_draw_logs(game->env);
 
     // Draw the game entities
     lua_pushstring(game->env, "entities");
