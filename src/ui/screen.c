@@ -16,8 +16,6 @@ void screen_init(struct screen *screen) {
     for (i = 0; i < ARRAYLEN(screen->info); ++i) {
         screen->info[i] = EMPTY_CELL;
     }
-
-    screen->log = NULL;
 }
 
 void screen_draw_object(const struct screen *screen, struct tb_cell object, size_t x, size_t y) {
