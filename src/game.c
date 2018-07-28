@@ -34,37 +34,6 @@ int game_new(struct game *game, const char *match_script) {
     return 0;
 }
 
-void game_dump_stack(struct game *game) {
-    int i;
-    int top = lua_gettop(game->env);
-
-    for (i = 1; i <= top; ++i) {
-        int t = lua_type(game->env, i);
-
-        switch (t) {
-            case LUA_TSTRING:
-                printf("`%s`", lua_tostring(game->env, i));
-                break;
-
-            case LUA_TBOOLEAN:
-                printf(lua_toboolean(game->env, i) ? "true" : "false");
-                break;
-
-            case LUA_TNUMBER:  /* numbers */
-                printf("%g", lua_tonumber(game->env, i));
-                break;
-
-            default:  /* other values */
-                printf("%s", lua_typename(game->env, t));
-                break;
-        }
-
-        putchar(' ');
-    }
-
-    putchar('\n');
-}
-
 void game_draw(struct game *game) {
     tb_clear();
     screen_draw_window();
