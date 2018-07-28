@@ -14,7 +14,6 @@
  */
 struct game {
     lua_State *env;
-    struct screen *screen;
 };
 
 /*
