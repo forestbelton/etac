@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <termbox.h>
+#include <stdio.h>
 
 #define verify0(pred, str) do { \
     if (!(pred)) { \

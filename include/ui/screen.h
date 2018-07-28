@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <termbox.h>
+#include <lua.h>
 
 #define LOG_LINE_COUNT 3
 
@@ -14,20 +15,13 @@
 
 #define OBJECT_COUNT 54 * 14
 
-struct log_node {
-    int fg;
-    int bg;
-    char *content;
-    struct log_node *next;
-};
-
 struct screen {
     struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
-    struct log_node *log;
 };
 
 void screen_init(struct screen *screen);
 void screen_draw_window(const struct screen *screen, const struct tb_cell *window);
 void screen_draw_object(struct tb_cell object, size_t x, size_t y);
+void screen_draw_logs(const struct screen *screen, lua_State *env);
 
 #endif

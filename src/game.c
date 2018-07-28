@@ -84,9 +84,11 @@ void game_draw(struct game *game) {
 
     verify(map_data != NULL, "data for map '%s' not found", map_name);
     screen_draw_window(game->screen, map_data);
+    lua_pop(game->env, 1);
+
+    screen_draw_logs(game->screen, game->env);
 
     // Draw the game entities
-    lua_pop(game->env, 1);
     lua_pushstring(game->env, "entities");
     lua_gettable(game->env, -2);
     verify0(lua_istable(game->env, -1), "entity list is not a table");
@@ -122,35 +124,4 @@ void game_draw(struct game *game) {
     }
 
     tb_present();
-}
-
-void game_log_styled(struct game *game, int fg, int bg, const char *fmt, ...) {
-    va_list args;
-    int length = 0;
-    struct log_node *log_entry = malloc(sizeof *log_entry);
-
-    if (log_entry == NULL) {
-        fprintf(stderr, "error: could not allocate log entry\n");
-        exit(EXIT_FAILURE);
-    }
-
-    va_start(args, fmt);
-    length = vsnprintf(log_entry->content, 0, fmt, args);
-    va_end(args);
-
-    log_entry->content = malloc(length + 1);
-    if (log_entry->content == NULL) {
-        fprintf(stderr, "error: could not allocate log entry content\n");
-        exit(EXIT_FAILURE);
-    }
-
-    va_start(args, fmt);
-    vsnprintf(log_entry->content, length + 1, fmt, args);
-    va_end(args);
-
-    log_entry->fg = fg;
-    log_entry->bg = bg;
-    log_entry->next = game->screen->log;
-
-    game->screen->log = log_entry;
 }
