@@ -1,5 +1,5 @@
 CC = @CC@
-CFLAGS = -Iinclude -Wall -Wextra -Werror -std=gnu99 -pedantic @CFLAGS@
+CFLAGS = -Iinclude -Wno-gnu-zero-variadic-macro-arguments -std=c99 -Wall -Wextra -Werror -pedantic @CFLAGS@
 
 LD = @CC@
 LDFLAGS = @LDFLAGS@

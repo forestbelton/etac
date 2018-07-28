@@ -32,20 +32,8 @@ int game_new(struct game *game, const char *match_script) {
     verify(!match_load_error, "[lua]: %s", lua_tostring(game->env, -1));
 
     game->screen = malloc(sizeof *game->screen);
-    verify(game->screen != NULL, "could not allocate screen");
+    verify0(game->screen != NULL, "could not allocate screen");
     screen_init(game->screen);
-
-    game_log(game, "Welcome to etac v0.0.1");
-
-    lua_pushstring(game->env, "title");
-    lua_gettable(game->env, -2);
-    game_log(game, "loaded match: %s", lua_tostring(game->env, -1));
-    lua_pop(game->env, 1);
-
-    lua_pushstring(game->env, "description");
-    lua_gettable(game->env, -2);
-    game_log(game, "%s", lua_tostring(game->env, -1));
-    lua_pop(game->env, 1);
 
     return 0;
 }
@@ -84,12 +72,12 @@ void game_dump_stack(struct game *game) {
 void game_draw(struct game *game) {
     tb_clear();
 
-    verify(lua_istable(game->env, -1), "game object not on top of stack");
+    verify0(lua_istable(game->env, -1), "game object not on top of stack");
 
     // Draw the game map
     lua_pushstring(game->env, "map");
     lua_gettable(game->env, -2);
-    verify(lua_isstring(game->env, -1), "map name not a string");
+    verify0(lua_isstring(game->env, -1), "map name not a string");
 
     const char *map_name = lua_tostring(game->env, -1);
     const struct tb_cell *map_data = map_by_name(map_name);
@@ -101,7 +89,7 @@ void game_draw(struct game *game) {
     lua_pop(game->env, 1);
     lua_pushstring(game->env, "entities");
     lua_gettable(game->env, -2);
-    verify(lua_istable(game->env, -1), "entity list is not a table");
+    verify0(lua_istable(game->env, -1), "entity list is not a table");
 
     lua_pushnil(game->env);
     while (lua_next(game->env, -2) != 0) {
@@ -109,28 +97,28 @@ void game_draw(struct game *game) {
 
         lua_pushstring(game->env, "x");
         lua_gettable(game->env, -3);
-        verify(lua_isnumber(game->env, -1), "entity.x is not a number");
+        verify0(lua_isnumber(game->env, -1), "entity.x is not a number");
 
         const size_t x = (size_t)lua_tonumber(game->env, -1);
         lua_pop(game->env, 1);
 
         lua_pushstring(game->env, "y");
         lua_gettable(game->env, -3);
-        verify(lua_isnumber(game->env, -1), "entity.y is not a number");
+        verify0(lua_isnumber(game->env, -1), "entity.y is not a number");
 
         const size_t y = (size_t)lua_tonumber(game->env, -1);
         lua_pop(game->env, 1);
 
         lua_pushstring(game->env, "sprite");
         lua_gettable(game->env, -3);
-        verify(lua_isstring(game->env, -1), "entity.sprite is not a string");
+        verify0(lua_isstring(game->env, -1), "entity.sprite is not a string");
 
         const char *sprite = lua_tostring(game->env, -1);
         struct tb_cell object = { *sprite, TB_DEFAULT, TB_DEFAULT };
         object.bg = map_data[WINDOW_WIDTH * y + x].bg;
 
         lua_pop(game->env, 3);
-        screen_draw_object(game->screen, object, x, y);
+        screen_draw_object(object, x, y);
     }
 
     tb_present();

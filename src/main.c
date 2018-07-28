@@ -6,7 +6,6 @@
 #include "game.h"
 
 int main() {
-    struct screen screen;
     struct tb_event event;
 
     struct game game;
