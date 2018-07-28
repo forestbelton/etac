@@ -13,24 +13,24 @@ function Match:new (o)
     setmetatable(o, self)
 
     self.__index = self
-    for i = 1, #self.entity_descriptions do
-        local entityId = self:add(o.entity_descriptions[i])
-        self:enqueue(entityId)
+    for i = 1, #o.entity_descriptions do
+        local entityId = o:add(o.entity_descriptions[i])
+        o:enqueue(entityId)
     end
 
-    local title = string.format("loaded match: %s", self.title)
-    self:log(title)
-    self:log(self.description)
+    local title = string.format("loaded match: %s", o.title)
+    o:log(title)
+    o:log(o.description)
 
     return o
 end
 
-function Match:add (entity)
-    local entityClass = require(entity.script)
+function Match:add (entity_description)
+    local entityClass = require(entity_description.script)
     local entity = entityClass:new({
         id = #self.entities + 1,
-        x = entity.x,
-        y = entity.y
+        x = entity_description.x,
+        y = entity_description.y
     })
 
     self.entities[entity.id] = entity

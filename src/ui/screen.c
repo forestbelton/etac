@@ -18,7 +18,7 @@ void screen_init(struct screen *screen) {
     }
 }
 
-void screen_draw_object(const struct screen *screen, struct tb_cell object, size_t x, size_t y) {
+void screen_draw_object(struct tb_cell object, size_t x, size_t y) {
     tb_put_cell(x + 2, y + 1, &object);
 }
 
