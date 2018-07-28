@@ -112,7 +112,7 @@ void game_draw(struct game *game) {
         verify0(lua_isstring(game->env, -1), "entity.sprite is not a string");
 
         const char *sprite = lua_tostring(game->env, -1);
-        struct tb_cell object = { *sprite, TB_DEFAULT, TB_DEFAULT };
+        struct tb_cell object = { *sprite, TB_BLACK, TB_DEFAULT };
         object.bg = map_data[WINDOW_WIDTH * y + x].bg;
 
         lua_pop(game->env, 3);
