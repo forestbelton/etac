@@ -27,13 +27,13 @@ end
 
 function Match:add (entity_description)
     local entityClass = require(entity_description.script)
-    local entity = entityClass:new({
-        id = #self.entities + 1,
-        x = entity_description.x,
-        y = entity_description.y
-    })
 
+    entity_description.id = #self.entities + 1
+    entity_description.script = nil
+
+    local entity = entityClass:new(entity_description)
     self.entities[entity.id] = entity
+
     return entity.id
 end
 
