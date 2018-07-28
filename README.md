@@ -1,4 +1,4 @@
-etac
+etac ![build status](https://travis-ci.org/forestbelton/etac.svg?branch=master)
 ====
 
 Dependencies
