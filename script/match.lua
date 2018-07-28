@@ -88,6 +88,31 @@ function Match:take_turn ()
     self:add(entity)
 end
 
+function Match:is_over ()
+    over = false
+
+    if #self.queue == 0 then
+        over = true
+    else
+        factions = {}
+
+        for i = 1, #self.queue do
+            local entry = self.queue[i]
+            factions[entry.faction] = true
+        end
+
+        factions["neutral"] = nil
+        num_factions = 0
+        for _ in pairs(factions) do
+            num_factions = num_factions + 1
+        end
+
+        over = num_factions < 2
+    end
+
+    return over
+end
+
 function Match:log (content)
     table.insert(self.log_entries, 1, content)
 end

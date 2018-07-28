@@ -1,7 +1,8 @@
 Entity = {
     id = -1,
     name = "Game Object",
-    sprite = "?"
+    sprite = "?",
+    faction = "neutral"
 }
 
 function Entity:new(o)
