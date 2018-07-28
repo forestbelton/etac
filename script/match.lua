@@ -88,8 +88,12 @@ function Match:take_turn ()
     end
 
     local entity = self:dequeue()
+
+    local turn_msg = string.format("it is %s's turn", entity.name)
+    self:log(turn_msg)
+
     entity:take_turn(self)
-    self:add(entity)
+    self:enqueue(entity.id)
 end
 
 function Match:is_over ()
