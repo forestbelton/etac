@@ -7,3 +7,6 @@ services:
 
 before_install:
     - docker build -t etac .
+
+script:
+    - echo "No tests to run."
