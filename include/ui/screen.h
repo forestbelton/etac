@@ -15,16 +15,8 @@
 
 #define OBJECT_COUNT 54 * 14
 
-struct log_node {
-    int fg;
-    int bg;
-    char *content;
-    struct log_node *next;
-};
-
 struct screen {
     struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
-    struct log_node *log;
 };
 
 void screen_init(struct screen *screen);

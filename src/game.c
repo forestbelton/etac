@@ -35,16 +35,12 @@ int game_new(struct game *game, const char *match_script) {
     verify(game->screen != NULL, "could not allocate screen");
     screen_init(game->screen);
 
-    game_log(game, "Welcome to etac v0.0.1");
-
     lua_pushstring(game->env, "title");
     lua_gettable(game->env, -2);
-    game_log(game, "loaded match: %s", lua_tostring(game->env, -1));
     lua_pop(game->env, 1);
 
     lua_pushstring(game->env, "description");
     lua_gettable(game->env, -2);
-    game_log(game, "%s", lua_tostring(game->env, -1));
     lua_pop(game->env, 1);
 
     return 0;
@@ -136,35 +132,4 @@ void game_draw(struct game *game) {
     }
 
     tb_present();
-}
-
-void game_log_styled(struct game *game, int fg, int bg, const char *fmt, ...) {
-    va_list args;
-    int length = 0;
-    struct log_node *log_entry = malloc(sizeof *log_entry);
-
-    if (log_entry == NULL) {
-        fprintf(stderr, "error: could not allocate log entry\n");
-        exit(EXIT_FAILURE);
-    }
-
-    va_start(args, fmt);
-    length = vsnprintf(log_entry->content, 0, fmt, args);
-    va_end(args);
-
-    log_entry->content = malloc(length + 1);
-    if (log_entry->content == NULL) {
-        fprintf(stderr, "error: could not allocate log entry content\n");
-        exit(EXIT_FAILURE);
-    }
-
-    va_start(args, fmt);
-    vsnprintf(log_entry->content, length + 1, fmt, args);
-    va_end(args);
-
-    log_entry->fg = fg;
-    log_entry->bg = bg;
-    log_entry->next = game->screen->log;
-
-    game->screen->log = log_entry;
 }
