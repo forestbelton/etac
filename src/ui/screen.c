@@ -2,34 +2,17 @@
 #include "ui/screen.h"
 #include "util.h"
 
-#define ARRAYLEN(arr) ((sizeof (arr)) / (sizeof (arr)[0]))
-
-const struct tb_cell EMPTY_CELL = {
-    ' ',
-    TB_DEFAULT,
-    TB_DEFAULT
-};
-
-void screen_init(struct screen *screen) {
-    size_t i;
-
-    for (i = 0; i < ARRAYLEN(screen->info); ++i) {
-        screen->info[i] = EMPTY_CELL;
-    }
-}
-
 void screen_draw_object(struct tb_cell object, size_t x, size_t y) {
     tb_put_cell(x + 2, y + 1, &object);
 }
 
-void screen_draw_window(const struct screen *screen, const struct tb_cell *window) {
+void screen_draw_window(const struct tb_cell *window) {
     // window box
     draw_rectangle(1, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     tb_blit(2, 1, WINDOW_WIDTH, WINDOW_HEIGHT, &window[0]);
 
     // info box
     draw_vertical_line(WINDOW_WIDTH + 4, 0, WINDOW_HEIGHT + 2);
-    tb_blit(WINDOW_WIDTH + 6, 0, INFO_WIDTH, INFO_HEIGHT, &screen->info[0]);
 
     // chat box
     draw_horizontal_line(0, WINDOW_HEIGHT + 2, tb_width());

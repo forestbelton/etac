@@ -31,10 +31,6 @@ int game_new(struct game *game, const char *match_script) {
         || lua_pcall(game->env, 0, 1, 0);
     verify(!match_load_error, "[lua]: %s", lua_tostring(game->env, -1));
 
-    game->screen = malloc(sizeof *game->screen);
-    verify0(game->screen != NULL, "could not allocate screen");
-    screen_init(game->screen);
-
     return 0;
 }
 
@@ -83,7 +79,7 @@ void game_draw(struct game *game) {
     const struct tb_cell *map_data = map_by_name(map_name);
 
     verify(map_data != NULL, "data for map '%s' not found", map_name);
-    screen_draw_window(game->screen, map_data);
+    screen_draw_window(map_data);
     lua_pop(game->env, 1);
 
     screen_draw_logs(game->env);

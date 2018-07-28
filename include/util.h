@@ -21,4 +21,6 @@
     } \
 } while (0)
 
+#define array_len(arr) ((sizeof (arr)) / (sizeof (arr)[0]))
+
 #endif

@@ -15,12 +15,7 @@
 
 #define OBJECT_COUNT 54 * 14
 
-struct screen {
-    struct tb_cell info[INFO_WIDTH * INFO_HEIGHT];
-};
-
-void screen_init(struct screen *screen);
-void screen_draw_window(const struct screen *screen, const struct tb_cell *window);
+void screen_draw_window(const struct tb_cell *window);
 void screen_draw_object(struct tb_cell object, size_t x, size_t y);
 void screen_draw_logs(lua_State *env);
 
