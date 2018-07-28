@@ -13,8 +13,6 @@
 #define INFO_WIDTH  54
 #define INFO_HEIGHT 19
 
-#define OBJECT_COUNT 54 * 14
-
 /*
  * Draw the game window.
  * @param window An array of cells to render in the window. The array must
