@@ -18,6 +18,10 @@ function Match:new (o)
         o:enqueue(entityId)
     end
 
+    local player = Player:new(o.player_description)
+    player.id = #o.entities + 1
+    o.entities[player.id] = player
+
     local title = string.format("loaded match: %s", o.title)
     o:log(title)
     o:log(o.description)
