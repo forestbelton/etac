@@ -1,6 +1,7 @@
 #include <termbox.h>
+#include "map/map.h"
 
-struct tb_cell map_river_asymmetric[] = {
+static struct tb_cell map_data[] = {
     { ' ', TB_WHITE, TB_GREEN },
     { ' ', TB_WHITE, TB_GREEN },
     { ',', TB_WHITE, TB_GREEN },
@@ -758,3 +759,5 @@ struct tb_cell map_river_asymmetric[] = {
     { ' ', TB_WHITE, TB_GREEN },
     { ' ', TB_WHITE, TB_GREEN }
 };
+
+struct map map_river_asymmetric = { map_data, 54, 14 };

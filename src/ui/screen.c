@@ -6,10 +6,10 @@ void screen_draw_object(struct tb_cell object, size_t x, size_t y) {
     tb_put_cell(x + 2, y + 1, &object);
 }
 
-void screen_draw_window(const struct tb_cell *window) {
+void screen_draw_window(const struct map *map) {
     // window box
     draw_rectangle(1, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    tb_blit(2, 1, WINDOW_WIDTH, WINDOW_HEIGHT, &window[0]);
+    tb_blit(2, 1, WINDOW_WIDTH, WINDOW_HEIGHT, map->data);
 
     // info box
     draw_vertical_line(WINDOW_WIDTH + 4, 0, WINDOW_HEIGHT + 2);
