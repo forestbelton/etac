@@ -114,7 +114,7 @@ void game_draw(struct game *game) {
 
         const char *sprite = lua_tostring(game->env, -1);
         struct tb_cell object = { *sprite, TB_BLACK, TB_DEFAULT };
-        object.bg = map->data[map->height * y + x].bg;
+        object.bg = map->data[map->width * y + x].bg;
 
         lua_pop(game->env, 3);
         screen_draw_object(object, x, y);
