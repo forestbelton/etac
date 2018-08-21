@@ -24,10 +24,13 @@ const compile = (grid, name) => {
 
     return `
 #include <termbox.h>
+#include "map/map.h"
 
-struct tb_cell map_${mapName}[] = {
+static struct tb_cell map_data[] = {
     ${cells.join(',\n    ')}
 };
+
+struct map map_${mapName} = { map_data, ${MAP_WIDTH}, ${MAP_HEIGHT} };
 `
 }
 
