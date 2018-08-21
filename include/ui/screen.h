@@ -16,9 +16,14 @@
 
 /*
  * Draw the game window.
+ */
+void screen_draw_window();
+
+/*
+ * Draw the game map.
  * @param map The map structure to render in the window.
  */
-void screen_draw_window(const struct map *map);
+void screen_draw_map(const struct map *map);
 
 /*
  * Draw a game object in the window space.

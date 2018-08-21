@@ -67,6 +67,7 @@ void game_dump_stack(struct game *game) {
 
 void game_draw(struct game *game) {
     tb_clear();
+    screen_draw_window();
 
     verify0(lua_istable(game->env, -1), "game object not on top of stack");
 
@@ -79,7 +80,7 @@ void game_draw(struct game *game) {
     const struct map *map = map_by_name(map_name);
 
     verify(map != NULL, "data for map '%s' not found", map_name);
-    screen_draw_window(map);
+    screen_draw_map(map);
     lua_pop(game->env, 1);
 
     screen_draw_logs(game->env);

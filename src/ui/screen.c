@@ -1,3 +1,4 @@
+#include <string.h>
 #include "ui/draw.h"
 #include "ui/screen.h"
 #include "util.h"
@@ -6,16 +7,28 @@ void screen_draw_object(struct tb_cell object, size_t x, size_t y) {
     tb_put_cell(x + 2, y + 1, &object);
 }
 
-void screen_draw_window(const struct map *map) {
+void screen_draw_window() {
     // window box
     draw_rectangle(1, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    tb_blit(2, 1, WINDOW_WIDTH, WINDOW_HEIGHT, map->data);
 
     // info box
     draw_vertical_line(WINDOW_WIDTH + 4, 0, WINDOW_HEIGHT + 2);
 
     // chat box
     draw_horizontal_line(0, WINDOW_HEIGHT + 2, tb_width());
+}
+
+void screen_draw_map(const struct map *map) {
+    struct tb_cell *cell_buffer = tb_cell_buffer();
+
+    size_t width = map->width > WINDOW_WIDTH ? WINDOW_WIDTH : map->width;
+    size_t height = map->height > WINDOW_HEIGHT ? WINDOW_HEIGHT : map->height;
+
+    for (size_t row = 0; row < height; row++) {
+        struct tb_cell *dest = cell_buffer + (row + 1) * tb_width() + 2;
+        const struct tb_cell *source = map->data + row * map->width;
+        memcpy(dest, source, width * sizeof(struct tb_cell));
+    }
 }
 
 void screen_draw_logs(lua_State *env) {
