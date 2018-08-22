@@ -1,3 +1,4 @@
+local dbg = require('script/debugger')
 local Entity = require('script/entity')
 
 Player = Entity:new({

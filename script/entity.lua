@@ -1,3 +1,5 @@
+local dbg = require('script/debugger')
+
 Entity = {
     id = -1,
     name = "Game Object",
