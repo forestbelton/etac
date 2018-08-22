@@ -67,6 +67,7 @@ void game_dump_stack(struct game *game) {
 
 void game_draw(struct game *game) {
     tb_clear();
+    screen_draw_window();
 
     verify0(lua_istable(game->env, -1), "game object not on top of stack");
 
@@ -76,10 +77,10 @@ void game_draw(struct game *game) {
     verify0(lua_isstring(game->env, -1), "map name not a string");
 
     const char *map_name = lua_tostring(game->env, -1);
-    const struct tb_cell *map_data = map_by_name(map_name);
+    const struct map *map = map_by_name(map_name);
 
-    verify(map_data != NULL, "data for map '%s' not found", map_name);
-    screen_draw_window(map_data);
+    verify(map != NULL, "data for map '%s' not found", map_name);
+    screen_draw_map(map);
     lua_pop(game->env, 1);
 
     screen_draw_logs(game->env);
@@ -113,7 +114,7 @@ void game_draw(struct game *game) {
 
         const char *sprite = lua_tostring(game->env, -1);
         struct tb_cell object = { *sprite, TB_BLACK, TB_DEFAULT };
-        object.bg = map_data[WINDOW_WIDTH * y + x].bg;
+        object.bg = map->data[map->width * y + x].bg;
 
         lua_pop(game->env, 3);
         screen_draw_object(object, x, y);
