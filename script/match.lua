@@ -23,6 +23,7 @@ function Match:new (o)
     local player = Player:new(o.player_description)
     player.id = #o.entities + 1
     o.entities[player.id] = player
+
     local title = string.format("loaded match: %s", o.title)
     o:log(title)
     o:log(o.description)
@@ -38,6 +39,7 @@ function Match:add (entity_description)
 
     local entity = entityClass:new(entity_description)
     self.entities[entity.id] = entity
+
     return entity.id
 end
 
@@ -54,6 +56,7 @@ function Match:enqueue (entityId)
     if time < 0 then
         return
     end
+
     local entry = {
         entity = entity,
         time = time
