@@ -1,5 +1,3 @@
-local dbg = require('script/debugger')
-
 local Match = {
     map = "none",
     title = "game match",

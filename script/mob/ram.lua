@@ -1,4 +1,3 @@
-local dbg = require('script/debugger')
 local Entity = require('script/entity')
 
 Ram = Entity:new({

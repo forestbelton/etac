@@ -1,4 +1,3 @@
-local dbg = require('script/debugger')
 local Match = require('script/match')
 
 return Match:new({
