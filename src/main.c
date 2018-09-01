@@ -4,12 +4,14 @@
 #include <termbox.h>
 
 #include "game.h"
+#include "log.h"
 
 int main() {
-    struct tb_event event;
+    log_init(LOGLEVEL_DEBUG);
 
     struct game game;
     if (game_new(&game, "script/match/siege.lua") == -1) {
+        log_close();
         exit(EXIT_FAILURE);
     }
 
