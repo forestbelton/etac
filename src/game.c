@@ -7,6 +7,7 @@
 #include <termbox.h>
 
 #include "game.h"
+#include "lua_util.h"
 #include "map/map.h"
 #include "ui/screen.h"
 #include "util.h"
@@ -41,17 +42,15 @@ void game_draw(struct game *game) {
     verify0(lua_istable(game->env, -1), "game object not on top of stack");
 
     // Draw the game map
-    lua_pushstring(game->env, "map");
-    lua_gettable(game->env, -2);
-    verify0(lua_isstring(game->env, -1), "map name not a string");
+    struct lua_value map_name;
+    lua_get_field(game->env, -1, "map", &map_name);
+    verify0(map_name.ty == LUA_TSTRING, "map name is not a string");
 
-    const char *map_name = lua_tostring(game->env, -1);
-    const struct map *map = map_by_name(map_name);
-
+    const struct map *map = map_by_name(map_name.str);
     verify(map != NULL, "data for map '%s' not found", map_name);
     screen_draw_map(map);
-    lua_pop(game->env, 1);
 
+    // Draw the game logs
     screen_draw_logs(game->env);
 
     // Draw the game entities
@@ -61,33 +60,29 @@ void game_draw(struct game *game) {
 
     lua_pushnil(game->env);
     while (lua_next(game->env, -2) != 0) {
-        lua_pushvalue(game->env, -2);
+        struct lua_value entity_x;
+        lua_get_field(game->env, -1, "x", &entity_x);
+        verify0(entity_x.ty == LUA_TNUMBER, "entity.x is not a number");
+        const size_t x = (size_t)entity_x.number;
 
-        lua_pushstring(game->env, "x");
-        lua_gettable(game->env, -3);
-        verify0(lua_isnumber(game->env, -1), "entity.x is not a number");
+        struct lua_value entity_y;
+        lua_get_field(game->env, -1, "y", &entity_y);
+        verify0(entity_y.ty == LUA_TNUMBER, "entity.y is not a number");
+        const size_t y = (size_t)entity_y.number;
 
-        const size_t x = (size_t)lua_tonumber(game->env, -1);
-        lua_pop(game->env, 1);
+        struct lua_value entity_sprite;
+        lua_get_field(game->env, -1, "sprite", &entity_sprite);
+        verify0(entity_sprite.ty == LUA_TSTRING, "entity.sprite is not a string");
+        const char *sprite = entity_sprite.str;
 
-        lua_pushstring(game->env, "y");
-        lua_gettable(game->env, -3);
-        verify0(lua_isnumber(game->env, -1), "entity.y is not a number");
-
-        const size_t y = (size_t)lua_tonumber(game->env, -1);
-        lua_pop(game->env, 1);
-
-        lua_pushstring(game->env, "sprite");
-        lua_gettable(game->env, -3);
-        verify0(lua_isstring(game->env, -1), "entity.sprite is not a string");
-
-        const char *sprite = lua_tostring(game->env, -1);
+        log_fmt(LOGLEVEL_TRACE, "drawing entity (sprite %s) at %zu, %zu", sprite, x, y);
         struct tb_cell object = { *sprite, TB_BLACK, TB_DEFAULT };
         object.bg = map->data[map->width * y + x].bg;
-
-        lua_pop(game->env, 3);
         screen_draw_object(object, x, y);
+
+        lua_pop(game->env, 1);
     }
 
+    lua_pop(game->env, 1);
     tb_present();
 }
