@@ -25,6 +25,12 @@ struct game {
 int game_new(struct game *game, const char *match_script);
 
 /*
+ * Begin a new game.
+ * @param game The game to start playing.
+ */
+void game_start(struct game *game);
+
+/*
  * Draw the game to the screen.
  * @param game The game structure to draw.
  */
