@@ -41,7 +41,7 @@ int game_isover(struct game *game) {
     lua_pushstring(game->env, "is_over");
     lua_gettable(game->env, -2);
     lua_pushvalue(game->env, -2);
-    verify(lua_pcall(game->env, 1, 0, 0) == 0, "error checking game over status: %s", lua_tostring(game->env, -1));
+    verify(lua_pcall(game->env, 1, 1, 0) == 0, "error checking game over status: %s", lua_tostring(game->env, -1));
 
     const int is_over = lua_toboolean(game->env, -1);
     lua_pop(game->env, 1);
