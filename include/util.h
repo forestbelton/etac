@@ -5,18 +5,22 @@
 #include <termbox.h>
 #include <stdio.h>
 
+#include "log.h"
+
 #define verify0(pred, str) do { \
     if (!(pred)) { \
-        fprintf(stderr, "error[%s@%d]: %s\n", __FILE__, __LINE__, (str)); \
+        log_fmt(LOGLEVEL_ERROR, "[%s:%d]: %s\n", __FILE__, __LINE__, (str)); \
+        log_close(); \
+        tb_shutdown(); \
         exit(EXIT_FAILURE); \
     } \
 } while (0)
 
 #define verify(pred, fmt, ...) do { \
     if (!(pred)) { \
-        fprintf(stderr, "error [%s@%d]: ", __FILE__, __LINE__); \
-        fprintf(stderr, fmt, ##__VA_ARGS__); \
-        fprintf(stderr, "\n"); \
+        log_fmt(LOGLEVEL_ERROR, "[%s:%d]: " fmt, __FILE__, __LINE__, ##__VA_ARGS__); \
+        log_close(); \
+        tb_shutdown(); \
         exit(EXIT_FAILURE); \
     } \
 } while (0)
