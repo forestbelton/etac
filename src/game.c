@@ -35,6 +35,40 @@ int game_new(struct game *game, const char *match_script) {
     return 0;
 }
 
+int game_isover(struct game *game) {
+    verify0(lua_istable(game->env, -1), "game object not on top of stack");
+
+    lua_pushstring(game->env, "is_over");
+    lua_gettable(game->env, -2);
+    lua_pushvalue(game->env, -2);
+    verify(lua_pcall(game->env, 1, 0, 0) == 0, "error checking game over status: %s", lua_tostring(game->env, -1));
+
+    const int is_over = lua_toboolean(game->env, -1);
+    lua_pop(game->env, 1);
+
+    return is_over;
+}
+
+void game_start(struct game *game) {
+    game_draw(game);
+
+    log_fmt(LOGLEVEL_DEBUG, "game started");
+    while (!game_isover(game)) {
+        log_fmt(LOGLEVEL_DEBUG, "taking turn");
+        verify0(lua_istable(game->env, -1), "game object not on top of stack");
+
+        lua_pushstring(game->env, "take_turn");
+        lua_gettable(game->env, -2);
+        lua_pushvalue(game->env, -2);
+
+        verify0(lua_pcall(game->env, 1, 0, 0) == 0, "error taking game turn");
+        game_draw(game);
+    }
+
+    game_draw(game);
+    log_fmt(LOGLEVEL_DEBUG, "game ended");
+}
+
 void game_draw(struct game *game) {
     tb_clear();
     screen_draw_window();

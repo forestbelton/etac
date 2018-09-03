@@ -7,6 +7,7 @@
 #include "log.h"
 
 int main() {
+    struct tb_event event;
     log_init(LOGLEVEL_DEBUG);
 
     struct game game;
@@ -16,8 +17,7 @@ int main() {
     }
 
     tb_init();
-
-    game_draw(&game);
+    game_start(&game);
     tb_poll_event(&event);
 
     tb_shutdown();
