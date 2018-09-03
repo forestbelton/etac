@@ -117,6 +117,10 @@ function Match:is_over ()
         over = num_factions < 2
     end
 
+    if over then
+        self:log("the match has ended")
+    end
+
     return over
 end
 
