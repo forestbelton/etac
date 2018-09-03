@@ -39,11 +39,18 @@ void screen_draw_logs(lua_State *env) {
     verify0(lua_istable(env, -1), "log_entries is not a table");
 
     lua_pushnil(env);
-    for (size_t i = 0; i < LOG_LINE_COUNT && lua_next(env, -2) != 0; i++) {
+
+    size_t i;
+    for (i = 0; i < LOG_LINE_COUNT; ++i) {
+        if (lua_next(env, -2) == 0) {
+            lua_pop(env, 1);
+            return;
+        }
+
         verify0(lua_isstring(env, -1), "log entry is not a string");
         draw_string(0, WINDOW_HEIGHT + 3 + (LOG_LINE_COUNT - i), lua_tostring(env, -1));
         lua_pop(env, 1);
     }
 
-    lua_pop(env, 1);
+    lua_pop(env, 2);
 }
