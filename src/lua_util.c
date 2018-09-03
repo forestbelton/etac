@@ -59,6 +59,12 @@ void lua_dump_stack(lua_State *state) {
 }
 
 void lua_get_field(lua_State *state, int table_index, const char *key, int ty, struct lua_value *value) {
+    verify(
+        lua_istable(state, table_index),
+        "expected table but found '%s' while accessing field",
+        lua_typename(state, table_index)
+    );
+
     lua_pushstring(state, key);
     lua_gettable(state, table_index - 1);
 
