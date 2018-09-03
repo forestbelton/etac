@@ -58,12 +58,18 @@ void lua_dump_stack(lua_State *state) {
     log_fmt(LOGLEVEL_DEBUG, "===");
 }
 
-void lua_get_field(lua_State *state, int table_index, const char *key, struct lua_value *value) {
+void lua_get_field(lua_State *state, int table_index, const char *key, int ty, struct lua_value *value) {
     lua_pushstring(state, key);
     lua_gettable(state, table_index - 1);
 
     lua_at(state, -1, value);
-    lua_dump_stack(state);
-
     lua_pop(state, 1);
+
+    verify(
+        value->ty == ty,
+        "type mismatch for field '%s': found %s, expected %s",
+        key,
+        lua_typename(state, value->ty),
+        lua_typename(state, ty)
+    );
 }

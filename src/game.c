@@ -77,8 +77,7 @@ void game_draw(struct game *game) {
 
     // Draw the game map
     struct lua_value map_name;
-    lua_get_field(game->env, -1, "map", &map_name);
-    verify0(map_name.ty == LUA_TSTRING, "map name is not a string");
+    lua_get_field(game->env, -1, "map", LUA_TSTRING, &map_name);
 
     const struct map *map = map_by_name(map_name.str);
     verify(map != NULL, "data for map '%s' not found", map_name);
@@ -95,18 +94,15 @@ void game_draw(struct game *game) {
     lua_pushnil(game->env);
     while (lua_next(game->env, -2) != 0) {
         struct lua_value entity_x;
-        lua_get_field(game->env, -1, "x", &entity_x);
-        verify0(entity_x.ty == LUA_TNUMBER, "entity.x is not a number");
+        lua_get_field(game->env, -1, "x", LUA_TNUMBER, &entity_x);
         const size_t x = (size_t)entity_x.number;
 
         struct lua_value entity_y;
-        lua_get_field(game->env, -1, "y", &entity_y);
-        verify0(entity_y.ty == LUA_TNUMBER, "entity.y is not a number");
+        lua_get_field(game->env, -1, "y", LUA_TNUMBER, &entity_y);
         const size_t y = (size_t)entity_y.number;
 
         struct lua_value entity_sprite;
-        lua_get_field(game->env, -1, "sprite", &entity_sprite);
-        verify0(entity_sprite.ty == LUA_TSTRING, "entity.sprite is not a string");
+        lua_get_field(game->env, -1, "sprite", LUA_TSTRING, &entity_sprite);
         const char *sprite = entity_sprite.str;
 
         log_fmt(LOGLEVEL_TRACE, "drawing entity (sprite %s) at %zu, %zu", sprite, x, y);

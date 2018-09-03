@@ -22,13 +22,20 @@ struct lua_value {
 void lua_at(lua_State *state, int index, struct lua_value *value);
 
 /*
- * Read a value from a table.
+ * Read a value from a table. An error will occur if there is a type mismatch.
  * @param state The Lua state to read from.
  * @param table_index The stack index of the table to access.
  * @param key The key used to index the table with.
+ * @param ty The expected type for the value.
  * @param value Where the value will be stored.
  */
-void lua_get_field(lua_State *state, int table_index, const char *key, struct lua_value *value);
+void lua_get_field(
+    lua_State *state,
+    int table_index,
+    const char *key,
+    int ty,
+    struct lua_value *value
+);
 
 /*
  * Display a human-readable version of the Lua runtime.
