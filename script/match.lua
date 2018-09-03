@@ -88,7 +88,6 @@ function Match:take_turn ()
     end
 
     local entity = self:dequeue()
-
     local turn_msg = string.format("it is %s's turn", entity.name)
     self:log(turn_msg)
 
@@ -106,7 +105,7 @@ function Match:is_over ()
 
         for i = 1, #self.queue do
             local entry = self.queue[i]
-            factions[entry.faction] = true
+            factions[entry.entity.faction] = true
         end
 
         factions["neutral"] = nil
